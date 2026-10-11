@@ -8,7 +8,10 @@ run configures only Nexus, never another repository's board.
 
 GitHub Projects are user/organization-owned and linked to repositories. A repository's
 `/projects` page is a listing, not the Project number/URL. Inspect the exact user/org Project
-and its repository link. Credentials remain in `gh` credential storage, never config.
+and its repository link. Provider calls use [one-shot App authentication](github-app-authentication.md)
+with exact owning-repository context; personal `gh` credentials are never a fallback.
+Project reads/mutations need existing organization Projects read/write grants respectively;
+unsupported user-owned Projects fail closed without changing App registration.
 No key or token plaintext belongs in local mappings or reports.
 
 `scripts/projects.sh read nexus` reads a complete paginated field/item inventory and emits

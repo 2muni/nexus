@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "app_id": null,
+  "private_key_path": null,
+  "repositories": {
+    "OWNER/REPO": {
+      "id": null,
+      "installation_id": null,
+      "permissions": {
+        "metadata": "read",
+        "issues": "read",
+        "pull_requests": "read",
+        "contents": "read",
+        "organization_projects": "read"
+      }
+    }
+  }
+}

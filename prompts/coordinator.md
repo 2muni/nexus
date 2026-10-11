@@ -52,6 +52,20 @@ sessions. Router selects configured compatible backend after preserving agent/pr
 retry/reassignment/switch is never adapter policy or automatic recovery.
 
 Resolve capability profiles from local mapping or configured defaults using docs/routing.md.
+Apply [model selection and verification](../docs/model-selection-verification.md): connect
+tool/context/output/reasoning requirements to versioned suitability evidence and authorized
+local mapping/default ownership, then verify installed support/account readiness. Launch
+with a read-only first-checkpoint spec: the worker observes its exact workspace/head/dirty
+state and actual session model/effort, then blocks through the live preamble's backend ask.
+Confirm the same-attempt routing decision before source mutation; ordinary start alone
+can begin work and retrospective receipt comparison is insufficient. User model choice
+is authorization, catalog support is not account availability, and null inheritance is
+uncertainty. Known mismatch/below-floor capability blocks every risk; high-risk/critical
+unknowns HOLD. Record existing routing resolution and assignment requested/effective/evidence,
+with extra exact-session/timestamp detail in an ignored sidecar, not strict plan fields.
+Recheck before continuation after resume/reuse, settings/host/account/version/scope changes
+or quota interruption; preserve partial work and attempt, with no automatic downgrade,
+spending or retry. Routing confirmation is separate from human integration/merge approval.
 Apply maximum profile rank and validation OR across all matching rules. Missing secondary
 agents use compatible fallbacks; independence means a separate session. Record uncertainty
 and requested/effective capabilities, block unverified high-risk/critical floors, and never

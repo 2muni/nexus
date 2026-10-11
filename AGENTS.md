@@ -205,6 +205,9 @@ materialization/cleanup, never author repairs. P2 is risk-based; P3 is recorded 
 
 ## Orca and capabilities
 
+Follow [model selection and verification](docs/model-selection-verification.md) for
+requirement-based suitability, exact-session evidence and the blocking before-work checkpoint.
+
 Select the installed executable using its skill stub once and reuse it. Inspect
 `status --json` and `skills get orchestration` before Orca-dependent operations; load
 version-matched placement, DAG/gate and recovery references at action gates. Do not

@@ -1,7 +1,15 @@
 # GitHub WorkItemProvider binding. No routing, scheduling or local project-state store.
 nexus_github_api() {
-    command -v "${NEXUS_GH_COMMAND:-gh}" >/dev/null 2>&1 || nexus_fail 'Selected GitHub CLI unavailable.'
-    "${NEXUS_GH_COMMAND:-gh}" api --hostname github.com "$@"
+    local repository=${NEXUS_GITHUB_REPOSITORY:-} endpoint=$1 owner remainder
+    if [[ "$endpoint" == repos/* ]]; then
+        # The first two path components select the exact source/target repository.
+        remainder=${endpoint#repos/}; owner=${remainder%%/*}; remainder=${remainder#*/}
+        repository=$owner/${remainder%%/*}
+    fi
+    nexus_github_command "$repository" api --hostname github.com "$@"
+}
+nexus_github_command() {
+    python3 -I -B "$(dirname -- "${BASH_SOURCE[0]}")/github-app.py" "$@"
 }
 nexus_github_normalize() {
     jq -e --arg repository "$1" --arg kind "$2" --arg number "${3:-}" '
@@ -60,7 +68,7 @@ nexus_github_operation() {
                          metadata:{external_comment_id:.id,author_relationship:.author_association}}
                         else error("Association comment identity mismatch") end]'
             elif [[ "$op" == review-checks-read ]]; then
-                GH_HOST=github.com "${NEXUS_GH_COMMAND:-gh}" pr view "$argument" --repo "$repo" \
+                nexus_github_command "$repo" pr view "$argument" --repo "$repo" \
                     --json url,headRefOid,reviewDecision,statusCheckRollup,mergedAt,isDraft |
                     jq -e --arg repo "$repo" --arg number "$argument" '
                       if .url != ("https://github.com/"+$repo+"/pull/"+$number) then error("PR observation identity mismatch") else

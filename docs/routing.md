@@ -32,9 +32,18 @@ integration task declares these input IDs as `upstream_mutations` in its plan.
 1. Pick a task class from the configurable catalog, based on the task's characteristics.
 2. Apply every matching override. Profile rank is `fast < standard < deep < critical`;
    select the highest floor. Independent-validation flags combine with logical OR.
-3. Resolve preferred agent, then compatible fallback on the actual execution host.
-4. Read local capability data; verify launcher, account, model and supported effort.
-5. Record requested/effective agent, profile, model/effort, fallback reason and validation.
+3. State needed tools, usable context, output contracts and reasoning/judgment, then
+   assess preferred agent and compatible fallback against those requirements.
+4. Resolve user-authorized local mapping/default ownership; verify installed support
+   and account readiness on the actual host, preserving evidence scope and uncertainty.
+5. Record requested launch settings, observe actual model/effort in the exact session,
+   and complete the blocking Coordinator checkpoint before source mutation. Record
+   effective evidence, suitability rationale, fallback reason and validation.
+
+Follow [model selection and verification](model-selection-verification.md) for the
+full sequence, two-stage start, evidence states and rechecks. Suitability needs versioned
+evidence connected to task needs; model naming, price, user authorization and successful
+tests do not certify capability. Provider effort labels have no universal equivalence.
 
 Fast means low reasoning/latency priority; standard is balanced; deep favors high reasoning;
 critical requires the strongest verified suitable capability. Profile reasoning labels are
@@ -49,10 +58,14 @@ is unavailable; independence is about session and evidence, not vendor diversity
 `local/capabilities.yaml.example` documents local data with null model/effort and unverified
 status. A user-maintained chosen-model mapping supplies authorization for that model;
 verify support before launch. Null means inherit, not a quality certification. Unmapped
-low/medium-risk work can inherit defaults with recorded uncertainty and policy-required
-validation. Unknown floors for high-risk/critical work hold dispatch. Unsupported effort
-may use an equivalent supported setting or inherit with a reason only when the required
-floor remains verified. A fallback below the floor is blocked.
+low/medium-risk, non-critical work can inherit defaults only with a concrete bounded
+Coordinator decision recording uncertainty, operational reason and required validation;
+this never certifies suitability. Unknown floors for high-risk/critical work hold dispatch.
+Known setting mismatches or below-floor capability block work at every risk. Unsupported
+effort holds until a suitable supported equivalent is verified/authorized or a justified
+default decision preserves policy; unknown equivalence alone cannot release work.
+Unavailable preferred choices require a compatible authorized fallback, not merely any
+available model. Stale/conflicting evidence holds pending exact-session reobservation.
 
 ## Backend selection and assignment
 
@@ -84,3 +97,7 @@ reasons (for example architecture-sensitive, large context, required contract re
 requested/effective configuration, verification source and fallback. No private reasoning
 or raw transcripts. Plans name requirements/findings, acceptance checks, dependency waves,
 gates and validation tasks. Transient records do not become Git history automatically.
+Use existing `routing.resolution` and assignment `requested`/`effective`/`evidence`;
+keep extra host/session/timestamp and checkpoint details in an ignored sidecar as described
+in the procedure, without adding unsupported fields to strict check-plan JSON. Reobserve
+after reuse, resume, setting/host/account/version/scope changes or quota interruption.

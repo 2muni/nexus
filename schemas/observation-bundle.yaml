@@ -1,0 +1,67 @@
+version: 1
+kind: nexus-observation-bundle-contract
+# Declarative factual output contract, not executable JSON Schema or policy input.
+bundle:
+  required: [version, kind, started_at, observed_at, owner, selection, sources, requested_reads_complete, project, backend, trust, collection_status, recovery_input_ready, diagnostics]
+  version: 1
+  kind: nexus-observation-bundle
+  timestamps: UTC_collection_window_not_atomic_snapshot_or_source_freshness_certification
+  owner:
+    required: [repository, provider_repository, issue_number, work_item_id, mapping_source]
+    repository: explicit_logical_registry_key
+    provider_repository: exact_configured_local_provider_identity_never_embedded_repository_names
+    issue_number: explicit_positive_decimal_string
+    work_item_id: canonical_Issue_URL_from_identity_checked_port_or_null_on_failure
+    mapping_source: configured-local-provider-mapping
+  selection:
+    requested_pr_number: explicit_positive_decimal_string_or_null_no_inferred_association
+    association_verified: null
+  sources:
+    each_required: [name, source, started_at, observed_at, status, read_complete, inventory_complete, freshness_verified, diagnostics, data]
+    names: [issue, issues, pull_requests, comments, project, selected_pr, review_checks]
+    source:
+      required: [port, operation, repository, item_number]
+      port: [work-items, projects]
+      operation: exact_existing_read_port_operation_not_fabricated_external_reference
+      repository: provider_repository_for_work_items_logical_owner_for_projects
+      item_number: requested_decimal_string_or_null_for_lists_and_Project
+    status: [observed, unavailable, invalid, inconsistent]
+    read_complete: successful_port_exit_and_single_valid_normalized_JSON_value_with_cross_read_checks
+    inventory_complete: null_existing_normalized_ports_have_no_completeness_attestation
+    freshness_verified: null_read_timestamps_do_not_authenticate_age_or_concurrent_consistency
+    diagnostics: nonempty_sanitized_codes_no_raw_transport_errors
+    data: normalized_port_result_or_null_when_invalid_unavailable_or_contradicted
+  requested_reads_complete: all_requested_source_read_complete_flags_true_not_inventory_or_trust_claim
+  project:
+    known: valid_Project_read_received
+    membership_known: valid_Project_and_canonical_Issue_received_not_global_inventory_certification
+    member: matching_canonical_Work_Item_observed_boolean_or_null_if_unknown
+    status: exact_port_canonical_field_or_null_never_inferred_from_Issue_or_backend_state
+  backend:
+    observed: false
+    inventory_complete: null
+    liveness: unknown
+    attempts: null_not_empty_array_no_backend_inspection_or_settlement_claim
+  trust:
+    unknown_null: [associations_verified, human_decisions_verified, validation_accepted, capabilities_verified, required_ci, current_head_review_verified]
+  collection_status: partial
+  recovery_input_ready: false
+  diagnostics: explicit_unverified_inventories_backend_and_manual_trust_limits
+rules:
+  - help_performs_no_provider_or_backend_calls
+  - ports_own_canonical_URL_identity_native_metadata_and_provider_behavior
+  - all_list_and_comment_records_preserved_no_keyword_matching_or_newest_comment_selection
+  - explicit_PR_selection_is_read_scope_never_association_or_approval
+  - selected_PR_review_check_head_must_match_observed_PR_head
+  - canonical_Issue_must_match_Issue_inventory_identity_and_update_timestamp
+  - absent_or_malformed_sources_never_default_to_complete_empty_inventories
+  - bundle_is_not_workflow_observation_or_reconciliation_input
+  - no_decision_authentication_validation_acceptance_scheduling_Project_writes_dispatch_or_Done
+privacy:
+  output: private_until_manual_sanitation_and_separate_publication_authority
+  content: normalized_Issue_PR_and_comment_content_may_be_private
+  excludes: [credentials, local_configuration_secret_values, raw_transport_errors, transcript_archives]
+exit_codes:
+  0: help_only
+  1: invocation_mapping_or_prerequisite_error_no_bundle
+  2: partial_factual_bundle_including_successful_requested_reads_with_unknown_inventory_and_trust

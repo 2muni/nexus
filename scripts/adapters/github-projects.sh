@@ -74,11 +74,12 @@ nexus_github_project_membership_matches() {
     jq -e --arg content "$2" --arg repo "$3" --arg url "$4" 'length<=1 and all(.[]; (.id|type == "string" and length>0) and .content.id == $content and .content.url == $url and .content.repository.nameWithOwner == $repo)' <<< "$1" >/dev/null || nexus_fail 'Duplicate or conflicting Project membership identity; HOLD.'
 }
 nexus_github_project_operation() {
-    local op=$1 logical=$2 config=$3 request=$4 apply=$5 approved=$6 approval=$7 mapping snapshot field value expected matches item nativefield option current plan oid result
+    local op=$1 logical=$2 config=$3 request=$4 apply=$5 approved=$6 approval=$7 mapping snapshot field value expected matches item nativefield option current plan oid result NEXUS_GITHUB_REPOSITORY
     [[ "$op" == read || "$op" == field-update || "$op" == item-add ]] || nexus_fail 'Unsupported Project operation.'
     jq -e '.version == 1 and (.repositories|type == "object") and
       ([.repositories[].project | select(.number != null) | [.owner_kind,(.owner|ascii_downcase),.number]] as $ids | ($ids|unique|length) == ($ids|length))' "$config" >/dev/null || nexus_fail 'Invalid config or Project shared by multiple owning repositories.'
     mapping=$(jq -ec --arg logical "$logical" '.repositories[$logical] // error("Repository mapping absent")' "$config")
+    NEXUS_GITHUB_REPOSITORY=$(jq -r .repository <<< "$mapping")
     jq -e '(.repository|type == "string" and test("^[A-Za-z0-9][A-Za-z0-9-]*/[A-Za-z0-9][A-Za-z0-9_.-]*$")) and
       (.project.owner|type == "string" and test("^[A-Za-z0-9][A-Za-z0-9-]*$")) and
       (.project.number|type == "number" and floor == . and .>0) and

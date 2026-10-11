@@ -2,6 +2,8 @@ version: 1
 kind: nexus-execution-plan-contract
 # Declarative contract for the Coordinator; not a JSON Schema or a YAML interpreter.
 # validate.sh checks repository structure. The Planner checks all relational rules.
+# Optional JSON-form development semantic checker: scripts/check-plan.py.
+# Supported data/policy limits: docs/plan-validation.md; PASS grants no dispatch authority.
 plan:
   required: [version, objective, mode, repositories, requirements, baselines, tasks, waves, final_gate]
   version: 1

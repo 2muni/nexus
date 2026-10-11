@@ -63,7 +63,7 @@ class ProjectFixture(unittest.TestCase):
         self.cfg=self.dir/"config.json";self.cfg.write_text(json.dumps(self.config))
         self.req=self.dir/"request.json";self.req.write_text(json.dumps(dict(issue_url="https://github.com/a/b/issues/1",field="status",expected_value="Backlog",value="Ready")))
         self.calls=self.dir/"calls";self.state=self.dir/"state"
-        self.env=dict(os.environ,NEXUS_GH_COMMAND=str(self.mock),NEXUS_GITHUB_CONFIG=str(self.cfg),MOCK_CALLS=str(self.calls),MOCK_STATE=str(self.state))
+        self.env=dict(os.environ,NEXUS_GITHUB_OFFLINE_FIXTURE=str(self.mock),NEXUS_GITHUB_CONFIG=str(self.cfg),MOCK_CALLS=str(self.calls),MOCK_STATE=str(self.state))
     def tearDown(self): self.tmp.cleanup()
     def run_cli(self,*args,good=True):
         r=subprocess.run([str(ROOT/"scripts/projects.sh"),*args],cwd=ROOT,env=self.env,text=True,capture_output=True)

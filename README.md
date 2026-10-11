@@ -63,7 +63,8 @@ main integration requires human approval of the exact reviewed candidate.
 
 Run from a Nexus Git checkout with Bash and Git. Orca preflight uses the installed Orca CLI;
 structured decision/provider tools additionally require jq, and GitHub operations require
-authenticated gh. The development test suite requires Bash, Git, jq and Python 3;
+installed gh, Python 3 and OpenSSL with configured [GitHub App authentication](docs/github-app-authentication.md).
+The development test suite requires Bash, Git, jq, Python 3 and OpenSSL;
 its Python tests use the standard library only:
 
 ```bash
@@ -116,12 +117,18 @@ Plans, routing receipts and gate evidence stay under ignored `.runtime/runs/<run
 Generated reviews also stay ignored, preserving the user's review-storage preference.
 Only curated, explicitly requested durable policy/architecture decisions enter Git.
 See [architecture](docs/architecture.md), [routing](docs/routing.md),
+[model selection and effective-setting verification](docs/model-selection-verification.md),
 [feature execution](workflows/feature-execution.md), [weekly review](workflows/weekly-review.md)
-and [plan examples](schemas/examples/). Validation is structural; the Coordinator checks
-DAG, routing and integration semantics. No external YAML library is required.
+and [plan examples](schemas/examples/). `validate.sh` checks repository structure.
+The optional [development plan checker](docs/plan-validation.md) checks JSON-form
+plan semantics with explicit supported-policy limits; static PASS grants no dispatch
+authority. The Coordinator retains evidence and authorization checks. No external YAML
+library is required.
 
-GitHub Work Items: `scripts/work-items.sh --help` uses authenticated `gh` and `jq`,
-independent of Orca. Writes default to an exact reviewable plan; applying requires a
+GitHub Work Items: `scripts/work-items.sh --help` uses one-shot App-authenticated `gh` and `jq`,
+independent of Orca. Configure ignored `.runtime/github-app.json` from
+`local/github-app.json.example` and an external private key; personal credentials are never
+a fallback. Writes default to an exact reviewable plan; applying requires a
 matching digest and real human publication approval. See [provider binding](docs/adapters/github.md).
 
 Workflow decisions: `scripts/workflow.sh observation.json` proposes status/actions from
@@ -132,6 +139,10 @@ Projects: copy `local/github.json.example` to ignored `local/github.json` and co
 a separate linked Project per repository. `scripts/projects.sh --help` supports canonical
 status/priority reads, exact-reviewed Issue registration (`item-add`) and field updates.
 Membership changes do not set workflow status or start execution. See [Project setup](docs/github-projects.md).
+
+Observation collection: `scripts/observe.sh --help` gathers a private factual bundle through existing read ports; inventory and trust limits remain explicit. See [collector usage](docs/observation-collector.md).
+
+Operations: [read-only diagnostics](docs/operations-diagnostics.md) covers preflight, static plan checks, provider/backend correlation, acceptance holds and retained checkouts.
 
 Recovery: `scripts/reconcile.sh external-snapshot.json` proposes a decision from complete
 verified external state, without reading local runtime records. See [reconciliation](docs/reconciliation.md).

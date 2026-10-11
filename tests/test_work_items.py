@@ -57,7 +57,7 @@ class ProviderTests(unittest.TestCase):
         self.mock.write_text(MOCK)
         self.mock.chmod(0o755)
         self.calls = self.dir / "calls"
-        self.env = dict(os.environ, NEXUS_GH_COMMAND=str(self.mock), MOCK_CALLS=str(self.calls))
+        self.env = dict(os.environ, NEXUS_GITHUB_OFFLINE_FIXTURE=str(self.mock), MOCK_CALLS=str(self.calls))
         self.request = self.dir / "request.json"
 
     def tearDown(self):
@@ -86,7 +86,7 @@ class ProviderTests(unittest.TestCase):
     def test_help_documents_pr_request_and_approval_without_provider(self):
         for command in [str(self.mock), str(self.dir / "missing-gh")]:
             with self.subTest(command=command):
-                env = dict(self.env, NEXUS_GH_COMMAND=command)
+                env = dict(self.env, NEXUS_GITHUB_OFFLINE_FIXTURE=command)
                 result = subprocess.run([str(CLI), "--help"], cwd=ROOT, env=env,
                                         text=True, capture_output=True)
                 self.assertEqual(result.returncode, 0, result.stderr)

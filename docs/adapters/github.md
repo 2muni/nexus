@@ -2,7 +2,10 @@
 
 `schemas/work-item-provider.yaml` defines logical Work Items; GitHub is the only current
 provider. `scripts/work-items.sh` is a one-operation CLI binding, not a workflow daemon.
-It uses installed `gh` authentication and `jq` for structured JSON; it never loads Orca.
+It uses one-shot GitHub App installation authentication through installed `gh` and
+`jq` for structured JSON; it never loads Orca. Configure the ignored local App
+binding and external key as described in [authentication](../github-app-authentication.md).
+Both API and PR review/check reads use this boundary, without personal credentials.
 Issue identity is its canonical GitHub URL. Native node IDs remain adapter metadata.
 Single reads bind repository, record kind and number to the returned canonical URL;
 lists enforce repository/kind and positive number for every record. Comment and PR
@@ -67,4 +70,6 @@ No merge, push, deletion or automatic Project/Issue publication is implemented.
 API behavior is grounded in installed `gh api` help and
 [GitHub Issues REST documentation](https://docs.github.com/en/rest/issues/issues) and
 [Pull Requests REST documentation](https://docs.github.com/en/rest/pulls/pulls).
-Tests use a mock CLI; no remote Issue/PR was created for verification.
+Provider conformance tests use the explicit unauthenticated offline fixture boundary;
+App tests use generated temporary keys and mocked HTTP. No remote Issue/PR was created
+for verification. Live read validation and current-head review/CI remain separate evidence.
